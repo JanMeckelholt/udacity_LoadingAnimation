@@ -9,6 +9,36 @@
     tools:context=".activities.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_margin">
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/option_glide"
+                android:textSize="@dimen/default_text_size"
+                android:layout_marginBottom="@dimen/standard_margin"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/option_udacity"
+                android:textSize="@dimen/default_text_size"
+                android:layout_marginBottom="@dimen/standard_margin"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/option_retrofit"
+                android:textSize="@dimen/default_text_size"
+                android:layout_marginBottom="@dimen/standard_margin"/>
+        </RadioGroup>
+    </androidx.core.widget.NestedScrollView>
+
     <com.udacity.loadingbtn.LoadingButton
         android:id="@+id/custom_button"
         android:layout_width="0dp"
@@ -17,6 +47,10 @@
         android:layout_height="60dp"
         android:layout_margin="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
