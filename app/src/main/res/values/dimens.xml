@@ -1,6 +1,9 @@
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="standard_margin">16dp</dimen>
+    <dimen name="fabMargin">16dp</dimen>
+    <dimen name="standardMargin">16dp</dimen>
 
-    <dimen name="default_text_size">20sp</dimen>
+    <dimen name="defaultTextSize">20sp</dimen>
+    <dimen name="strokeWidth">4dp</dimen>
+    <dimen name="rectInset">80dp</dimen>
+
 </resources>

@@ -17,25 +17,25 @@
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/standard_margin">
+            android:layout_margin="@dimen/standardMargin">
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/option_glide"
-                android:textSize="@dimen/default_text_size"
-                android:layout_marginBottom="@dimen/standard_margin"/>
+                android:textSize="@dimen/defaultTextSize"
+                android:layout_marginBottom="@dimen/standardMargin"/>
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/option_udacity"
-                android:textSize="@dimen/default_text_size"
-                android:layout_marginBottom="@dimen/standard_margin"/>
+                android:textSize="@dimen/defaultTextSize"
+                android:layout_marginBottom="@dimen/standardMargin"/>
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/option_retrofit"
-                android:textSize="@dimen/default_text_size"
-                android:layout_marginBottom="@dimen/standard_margin"/>
+                android:textSize="@dimen/defaultTextSize"
+                android:layout_marginBottom="@dimen/standardMargin"/>
         </RadioGroup>
     </androidx.core.widget.NestedScrollView>
 
@@ -48,7 +48,6 @@
         android:layout_margin="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-
         />
 
 
