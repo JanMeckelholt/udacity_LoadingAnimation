@@ -9,6 +9,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import com.udacity.R
+import timber.log.Timber
 import kotlin.properties.Delegates
 
 class LoadingButton @JvmOverloads constructor(
@@ -16,11 +17,11 @@ class LoadingButton @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
     private var widthSize = 200
     private var heightSize = 100
+    private var buttonText = ""
 
     private val valueAnimator = ValueAnimator()
 
     private var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
-
 
 
     }
@@ -34,17 +35,25 @@ class LoadingButton @JvmOverloads constructor(
     private val rectInset = resources.getDimension(R.dimen.rectInset)
 
 
-
-
     init {
+        isClickable = true
+        buttonText = resources.getString(R.string.button_download)
     }
 
+    override fun performClick(): Boolean {
+        Timber.i("btn clicked")
+        if (super.performClick()) return true
+        buttonText = resources.getString(R.string.button_loading)
+
+        invalidate()
+        return true
+    }
 
     override fun onDraw(canvas: Canvas) {
         canvas.drawColor(resources.getColor(R.color.colorPrimary))
         paint.color = Color.WHITE
-        canvas.translate((widthSize/2).toFloat(), (heightSize/2 + paint.textSize/2))
-        canvas.drawText(resources.getString(R.string.button_download), 0f, 0f,paint)
+        canvas.translate((widthSize / 2).toFloat(), (heightSize / 2 + paint.textSize / 2))
+        canvas.drawText(buttonText, 0f, 0f, paint)
         super.onDraw(canvas)
 
     }
@@ -63,7 +72,7 @@ class LoadingButton @JvmOverloads constructor(
     }
 
     private fun animateProgressColor() {
-        val animator = ObjectAnimator.ofArgb(this,"backgroundColor", Color.BLACK, Color.RED)
+        val animator = ObjectAnimator.ofArgb(this, "backgroundColor", Color.BLACK, Color.RED)
         animator.setDuration(500)
         animator.repeatCount = 1
         animator.repeatMode = ObjectAnimator.REVERSE
