@@ -48,7 +48,7 @@ class LoadingButton @JvmOverloads constructor(
 
     override fun performClick(): Boolean {
         Timber.i("btn clicked")
-        if (super.performClick()) return true
+        super.performClick()
         if (buttonState == ButtonState.Clicked) {
             buttonState = ButtonState.Loading
             isClickable = false
@@ -97,8 +97,6 @@ class LoadingButton @JvmOverloads constructor(
             val yProgressCircle = (progressRadius * sin(angle)).toFloat()
             drawLine(0f, 0f, xProgressCircle, yProgressCircle, paint)
         }
-//
-        //canvas.drawCircle(0f,0f, progressRadius, paint)
         restore()
     }
 
@@ -140,7 +138,7 @@ class LoadingButton @JvmOverloads constructor(
             override fun onFinish() {
                 progress = 1.0f
                 rectF = RectF(0f, 0f, progress * widthSize, heightSize.toFloat())
-                //buttonState = ButtonState.Clicked
+                buttonState = ButtonState.Clicked
                 isClickable = true
                 buttonText = resources.getString(R.string.button_download)
                 invalidate()
@@ -149,6 +147,7 @@ class LoadingButton @JvmOverloads constructor(
         }
         timer.start()
     }
+
 
 
 }
