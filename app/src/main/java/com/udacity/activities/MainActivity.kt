@@ -43,6 +43,9 @@ class MainActivity : BaseActivity() {
 
         registerReceiver(receiver, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
 
+        binding.content.rgDownloadSelection.setOnCheckedChangeListener { _, selection ->
+            binding.content.customButton.setUrlIsSelected((selection != -1))
+        }
 
         binding.content.customButton.setOnClickListener {
             Timber.i("selection: ${binding.content.rgDownloadSelection.checkedRadioButtonId}")

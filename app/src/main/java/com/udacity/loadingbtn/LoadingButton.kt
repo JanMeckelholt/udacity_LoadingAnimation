@@ -25,6 +25,7 @@ class LoadingButton @JvmOverloads constructor(
     private lateinit var rectF: RectF
     private var progressRadius = resources.getDimension(R.dimen.progressRadius)
     private var progressRadiusPaddingRight = resources.getDimension(R.dimen.paddingRightProgressRadius)
+    private var urlIsSelected = false
 
 
     private var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
@@ -49,6 +50,7 @@ class LoadingButton @JvmOverloads constructor(
     override fun performClick(): Boolean {
         Timber.i("btn clicked")
         super.performClick()
+        if (!urlIsSelected) return true
         if (buttonState == ButtonState.Clicked) {
             buttonState = ButtonState.Loading
             isClickable = false
@@ -58,6 +60,10 @@ class LoadingButton @JvmOverloads constructor(
 
 
         return true
+    }
+
+    fun setUrlIsSelected(isSelected : Boolean){
+        urlIsSelected = isSelected
     }
 
     override fun onDraw(canvas: Canvas) {
