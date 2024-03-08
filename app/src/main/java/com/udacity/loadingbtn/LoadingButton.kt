@@ -110,6 +110,7 @@ class LoadingButton @JvmOverloads constructor(
             }
             override fun onFinish() {
                 progress = 1.0f
+                rectF = RectF(0f, 0f, progress * widthSize, heightSize.toFloat())
                 invalidate()
             }
 
