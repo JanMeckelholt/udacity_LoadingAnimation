@@ -4,6 +4,7 @@
 
     <dimen name="defaultTextSize">20sp</dimen>
     <dimen name="strokeWidth">4dp</dimen>
-    <dimen name="rectInset">80dp</dimen>
+    <dimen name="progressRadius">20dp</dimen>
+    <dimen name="paddingRightProgressRadius">20dp</dimen>
 
 </resources>

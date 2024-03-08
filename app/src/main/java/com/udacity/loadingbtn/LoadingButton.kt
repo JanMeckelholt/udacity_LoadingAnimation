@@ -10,6 +10,8 @@ import android.util.AttributeSet
 import android.view.View
 import com.udacity.R
 import timber.log.Timber
+import kotlin.math.cos
+import kotlin.math.sin
 import kotlin.properties.Delegates
 
 
@@ -20,7 +22,9 @@ class LoadingButton @JvmOverloads constructor(
     private var heightSize = 0
     private var buttonText = ""
     private var progress = 0f
-    private lateinit var rectF : RectF
+    private lateinit var rectF: RectF
+    private var progressRadius = resources.getDimension(R.dimen.progressRadius)
+    private var progressRadiusPaddingRight = resources.getDimension(R.dimen.paddingRightProgressRadius)
 
 
     private var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
@@ -36,7 +40,6 @@ class LoadingButton @JvmOverloads constructor(
     }
 
 
-
     init {
         buttonState = ButtonState.Clicked
         isClickable = true
@@ -48,6 +51,7 @@ class LoadingButton @JvmOverloads constructor(
         if (super.performClick()) return true
         if (buttonState == ButtonState.Clicked) {
             buttonState = ButtonState.Loading
+            isClickable = false
             buttonText = resources.getString(R.string.button_loading)
             animateProgressColor()
         }
@@ -58,18 +62,16 @@ class LoadingButton @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         canvas.drawColor(resources.getColor(R.color.colorPrimary))
-        when (buttonState){
+        when (buttonState) {
             ButtonState.Clicked -> {
 
             }
-            ButtonState.Loading -> {
-                canvas.save()
-                paint.color = resources.getColor(R.color.colorPrimaryDark)
-                paint.style = Paint.Style.FILL
 
-                canvas.drawRect(rectF, paint)
-                canvas.restore()
+            ButtonState.Loading -> {
+                canvas.drawFillProgress()
+                canvas.drawCircleProgress()
             }
+
             ButtonState.Completed -> {
 
             }
@@ -82,6 +84,32 @@ class LoadingButton @JvmOverloads constructor(
 
         super.onDraw(canvas)
 
+    }
+
+    private fun Canvas.drawCircleProgress() {
+        save()
+        translate((widthSize - progressRadiusPaddingRight - progressRadius), (heightSize / 2).toFloat())
+        val step = 100
+
+        for (i in 0..(progress * step).toInt()) {
+            val angle = (Math.PI * i/step) * 2
+            val xProgressCircle = (progressRadius * cos(angle)).toFloat()
+            val yProgressCircle = (progressRadius * sin(angle)).toFloat()
+            drawLine(0f, 0f, xProgressCircle, yProgressCircle, paint)
+        }
+//
+        //canvas.drawCircle(0f,0f, progressRadius, paint)
+        restore()
+    }
+
+    private fun Canvas.drawFillProgress() {
+        save()
+        paint.color = resources.getColor(R.color.colorPrimaryDark)
+        paint.style = Paint.Style.FILL
+
+        drawRect(rectF, paint)
+        paint.color = resources.getColor(R.color.colorAccent)
+        restore()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -101,16 +129,20 @@ class LoadingButton @JvmOverloads constructor(
     private fun animateProgressColor() {
         Timber.i("animate loading")
         val timeToDownload = 3_000L
-        val timer = object: CountDownTimer(timeToDownload, 100) {
+        val timer = object : CountDownTimer(timeToDownload, 100) {
             override fun onTick(millisUntilFinished: Long) {
                 progress = ((timeToDownload - millisUntilFinished).toFloat() / timeToDownload)
                 Timber.i("progress: $progress - $timeToDownload, $millisUntilFinished")
                 rectF = RectF(0f, 0f, progress * widthSize, heightSize.toFloat())
                 invalidate()
             }
+
             override fun onFinish() {
                 progress = 1.0f
                 rectF = RectF(0f, 0f, progress * widthSize, heightSize.toFloat())
+                //buttonState = ButtonState.Clicked
+                isClickable = true
+                buttonText = resources.getString(R.string.button_download)
                 invalidate()
             }
 
