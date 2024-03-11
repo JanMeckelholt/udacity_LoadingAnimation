@@ -136,7 +136,6 @@ class LoadingButton @JvmOverloads constructor(
         val timer = object : CountDownTimer(timeToDownload, 100) {
             override fun onTick(millisUntilFinished: Long) {
                 progress = ((timeToDownload - millisUntilFinished).toFloat() / timeToDownload)
-                Timber.i("progress: $progress - $timeToDownload, $millisUntilFinished")
                 rectF = RectF(0f, 0f, progress * widthSize, heightSize.toFloat())
                 invalidate()
             }
