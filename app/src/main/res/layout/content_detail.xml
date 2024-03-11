@@ -10,37 +10,35 @@
             type="com.udacity.models.DownloadType" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/motionLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".activities.DetailActivity"
         tools:showIn="@layout/activity_detail"
-        android:layout_margin="@dimen/standardMargin">
+        android:layout_margin="@dimen/standardMargin"
+        app:layoutDescription="@xml/content_detail_scene">
+
 
         <TextView
             android:id="@+id/fileNameLabel"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/resultMargin"
             android:text="File name:"
             android:textSize="@dimen/defaultTextSize"
-            app:layout_constraintEnd_toStartOf="@id/fileName"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="@dimen/resultMargin"
             />
 
         <TextView
             android:id="@+id/fileName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/fileNameLabel"
             android:textSize="@dimen/defaultTextSize"
             android:text="@{downloadType.toStrings().description}"
             tools:text="Glide - Image Loading Library by BumpTech"
-            app:layout_constraintBaseline_toBaselineOf="@id/fileNameLabel"
-            android:layout_marginTop="@dimen/resultMargin"
+
+
          />
 
         <TextView
@@ -49,9 +47,7 @@
             android:layout_height="wrap_content"
             android:text="Status: "
             android:textSize="@dimen/defaultTextSize"
-            app:layout_constraintEnd_toStartOf="@id/status"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/fileName"
+
             android:layout_marginTop="@dimen/resultMargin"/>
 
         <TextView
@@ -59,13 +55,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="@dimen/defaultTextSize"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/statusLabel"
-            app:layout_constraintBaseline_toBaselineOf="@id/statusLabel"
+
             tools:text="Success"
             app:Status="@{downloadType.status}"
             android:layout_marginTop="@dimen/resultMargin"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 
 </layout>

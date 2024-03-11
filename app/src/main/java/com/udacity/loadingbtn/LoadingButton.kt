@@ -8,6 +8,7 @@ import android.graphics.RectF
 import android.os.CountDownTimer
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.withStyledAttributes
 import com.udacity.R
 import timber.log.Timber
 import kotlin.math.cos
@@ -26,7 +27,8 @@ class LoadingButton @JvmOverloads constructor(
     private var progressRadius = resources.getDimension(R.dimen.progressRadius)
     private var progressRadiusPaddingRight = resources.getDimension(R.dimen.paddingRightProgressRadius)
     private var urlIsSelected = false
-
+    private var bgColor = 0
+    private var textColor = 0
 
     private var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
 
@@ -45,6 +47,10 @@ class LoadingButton @JvmOverloads constructor(
         buttonState = ButtonState.Clicked
         isClickable = true
         buttonText = resources.getString(R.string.button_download)
+        context.withStyledAttributes(attrs, R.styleable.LoadingButton) {
+            bgColor = getColor(R.styleable.LoadingButton_backgroundColor, Color.BLACK)
+            textColor = getColor(R.styleable.LoadingButton_textColor, Color.WHITE)
+        }
     }
 
     override fun performClick(): Boolean {
@@ -83,7 +89,7 @@ class LoadingButton @JvmOverloads constructor(
             }
         }
         canvas.save()
-        paint.color = Color.WHITE
+        paint.color = textColor
         canvas.translate((widthSize / 2).toFloat(), (heightSize / 2 + paint.textSize / 2))
         canvas.drawText(buttonText, 0f, 0f, paint)
         canvas.restore()
@@ -108,7 +114,7 @@ class LoadingButton @JvmOverloads constructor(
 
     private fun Canvas.drawFillProgress() {
         save()
-        paint.color = resources.getColor(R.color.colorPrimaryDark)
+        paint.color = bgColor
         paint.style = Paint.Style.FILL
 
         drawRect(rectF, paint)
