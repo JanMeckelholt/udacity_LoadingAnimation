@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="downloadType"
+            type="com.udacity.models.DownloadType" />
+    </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -23,15 +28,19 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <include layout="@layout/content_detail" />
+        <include layout="@layout/content_detail"
+            android:id="@+id/content"
+            app:downloadType="@{downloadType}"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/fabBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
+            android:layout_gravity="bottom|center"
             android:layout_margin="@dimen/fabMargin"
-            app:srcCompat="@android:drawable/ic_dialog_email" />
+            android:src="@drawable/baseline_arrow_back_24"
+            android:textSize="@dimen/defaultTextSize"
+ />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

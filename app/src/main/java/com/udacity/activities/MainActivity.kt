@@ -1,17 +1,18 @@
 package com.udacity.activities
 
 import android.app.DownloadManager
-import android.app.NotificationManager
-import android.app.PendingIntent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
-import androidx.core.app.NotificationCompat
 import androidx.lifecycle.ViewModelProvider
+import com.google.gson.Gson
+import com.udacity.Constants
 import com.udacity.R
 import com.udacity.databinding.ActivityMainBinding
+import com.udacity.models.DownloadType
 import com.udacity.utils.getUrl
 import timber.log.Timber
+
 
 
 class MainActivity : BaseActivity() {
@@ -22,14 +23,8 @@ class MainActivity : BaseActivity() {
         }
         ViewModelProvider(this, MainViewModel.Factory(activity.application)).get(MainViewModel::class.java)
     }
-
     private lateinit var binding: ActivityMainBinding
-
     private var downloadID: Long = 0
-
-    private lateinit var notificationManager: NotificationManager
-    private lateinit var pendingIntent: PendingIntent
-    private lateinit var action: NotificationCompat.Action
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +45,6 @@ class MainActivity : BaseActivity() {
                 download(binding.content.rgDownloadSelection.checkedRadioButtonId)
             }
         }
-
     }
 
     private fun download(selection: Int) {
@@ -65,16 +59,11 @@ class MainActivity : BaseActivity() {
                     .setAllowedOverRoaming(true)
 
             val downloadManager = getSystemService(DOWNLOAD_SERVICE) as DownloadManager
-            downloadID =
-                downloadManager.enqueue(request)
+            downloadID = downloadManager.enqueue(request)
+
+            val json = Gson().toJson(DownloadType(downloadID, selection))
+            sharedPreferences.edit().putString(Constants.SHAREDPREF_DOWNLOAD_TYPE, json).apply()
         }
-
     }
-
-    companion object {
-        private const val CHANNEL_ID = "channelId"
-    }
-
-
 }
 

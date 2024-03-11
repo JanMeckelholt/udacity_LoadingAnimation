@@ -1,11 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activities.DetailActivity"
-    tools:showIn="@layout/activity_detail">
+    xmlns:tools="http://schemas.android.com/tools">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <data>
+        <variable
+            name="downloadType"
+            type="com.udacity.models.DownloadType" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".activities.DetailActivity"
+        tools:showIn="@layout/activity_detail"
+        android:layout_margin="@dimen/standardMargin">
+
+        <TextView
+            android:id="@+id/fileNameLabel"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="File name:"
+            android:textSize="@dimen/defaultTextSize"
+            app:layout_constraintEnd_toStartOf="@id/fileName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/resultMargin"
+            />
+
+        <TextView
+            android:id="@+id/fileName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/fileNameLabel"
+            android:textSize="@dimen/defaultTextSize"
+            android:text="@{downloadType.toStrings().description}"
+            tools:text="Glide - Image Loading Library by BumpTech"
+            app:layout_constraintBaseline_toBaselineOf="@id/fileNameLabel"
+            android:layout_marginTop="@dimen/resultMargin"
+         />
+
+        <TextView
+            android:id="@+id/statusLabel"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Status: "
+            android:textSize="@dimen/defaultTextSize"
+            app:layout_constraintEnd_toStartOf="@id/status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fileName"
+            android:layout_marginTop="@dimen/resultMargin"/>
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/defaultTextSize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/statusLabel"
+            app:layout_constraintBaseline_toBaselineOf="@id/statusLabel"
+            tools:text="Success"
+            app:Status="@{downloadType.status}"
+            android:layout_marginTop="@dimen/resultMargin"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
