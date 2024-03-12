@@ -38,6 +38,7 @@ class MainActivity : BaseActivity() {
         setSupportActionBar(binding.toolbar)
 
         binding.content.rgDownloadSelection.setOnCheckedChangeListener { _, selection ->
+            binding.content.customButton.setIsReadyToDownload(true)
             binding.content.customButton.setUrlIsSelected((selection != -1))
         }
 

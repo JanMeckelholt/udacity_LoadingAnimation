@@ -6,7 +6,8 @@
 
     <string name="button_name">Click me</string>
     <string name="button_download">Download</string>
-    <string name="button_loading">We are loading </string>
+    <string name="button_loading">We are loading</string>
+    <string name="button_complete">Download complete</string>
     <string name="title_activity_detail">DetailActivity</string>
 
     <string name="no_selection">Please select the file to download</string>

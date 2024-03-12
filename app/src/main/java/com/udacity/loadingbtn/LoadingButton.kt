@@ -48,7 +48,7 @@ class LoadingButton @JvmOverloads constructor(
 
 
     init {
-        buttonState = ButtonState.Clicked
+        buttonState = ButtonState.ReadyToDownload
         isClickable = true
         buttonText = resources.getString(R.string.button_download)
         context.withStyledAttributes(attrs, R.styleable.LoadingButton) {
@@ -62,7 +62,7 @@ class LoadingButton @JvmOverloads constructor(
         Timber.i("btn clicked")
         super.performClick()
         if (!urlIsSelected) return true
-        if (buttonState == ButtonState.Clicked) {
+        if (buttonState == ButtonState.ReadyToDownload) {
             buttonState = ButtonState.Loading
             isClickable = false
             buttonText = resources.getString(R.string.button_loading)
@@ -84,11 +84,20 @@ class LoadingButton @JvmOverloads constructor(
         }
     }
 
+    fun setIsReadyToDownload(isReady: Boolean) {
+        if (isReady) {
+            buttonState = ButtonState.ReadyToDownload
+            invalidate()
+        }
+    }
+
     override fun onDraw(canvas: Canvas) {
         canvas.drawColor(resources.getColor(R.color.colorPrimary))
         when (buttonState) {
-            ButtonState.Clicked -> {
-
+            ButtonState.ReadyToDownload -> {
+                isClickable = true
+                buttonText = resources.getString(R.string.button_download)
+                invalidate()
             }
 
             ButtonState.Loading -> {
@@ -99,11 +108,14 @@ class LoadingButton @JvmOverloads constructor(
             ButtonState.Completed -> {
                 vA.cancel()
                 progress = 1.0f
+                isClickable = false
+                buttonText = resources.getString(R.string.button_complete)
+                rectF = RectF(0f, 0f, progress * widthSize, heightSize.toFloat())
+                canvas.drawFillProgress()
+                canvas.drawCircleProgress()
                 //rectF = RectF(0f, 0f, progress * widthSize, heightSize.toFloat())
-                buttonState = ButtonState.Clicked
-                isClickable = true
-                buttonText = resources.getString(R.string.button_download)
-                invalidate()
+                //buttonState = ButtonState.ReadyToDownload
+                //invalidate()
             }
         }
         canvas.save()
@@ -156,10 +168,8 @@ class LoadingButton @JvmOverloads constructor(
 
     private fun animateProgressColor() {
         Timber.i("animate loading")
-
-
         vA.duration = 3_000
-        vA.repeatCount = 3
+        vA.repeatCount = ValueAnimator.INFINITE
 
         vA.addUpdateListener { p ->
             progress = (p.animatedValue as Float) / 100

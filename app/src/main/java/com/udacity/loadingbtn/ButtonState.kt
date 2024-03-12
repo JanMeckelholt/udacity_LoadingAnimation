@@ -2,7 +2,7 @@ package com.udacity.loadingbtn
 
 
 sealed class ButtonState {
-    object Clicked : ButtonState()
+    object ReadyToDownload : ButtonState()
     object Loading : ButtonState()
     object Completed : ButtonState()
 }
