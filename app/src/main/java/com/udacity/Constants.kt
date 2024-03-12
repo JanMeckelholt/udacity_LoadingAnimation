@@ -6,6 +6,8 @@ object Constants {
     const val URL_RETROFIT = "https://github.com/square/retrofit/archive/refs/heads/trunk.zip"
 
     const val CHANNEL_ID = "channelId"
+    const val CHANNEL_DESC = "channelDesc"
+    const val CHANNEL_NAME = "channelName"
     const val NOTIFICATION_DEFAULT_ID= 0
 
     const val SHAREDPREF_DOWNLOAD_TYPE = "sharedPrefDownloadId"

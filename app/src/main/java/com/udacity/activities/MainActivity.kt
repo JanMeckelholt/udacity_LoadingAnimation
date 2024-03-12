@@ -1,7 +1,11 @@
 package com.udacity.activities
 
 import android.app.DownloadManager
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -45,6 +49,8 @@ class MainActivity : BaseActivity() {
                 download(binding.content.rgDownloadSelection.checkedRadioButtonId)
             }
         }
+        createChannel()
+
     }
 
     private fun download(selection: Int) {
@@ -63,6 +69,18 @@ class MainActivity : BaseActivity() {
 
             val json = Gson().toJson(DownloadType(downloadID, selection))
             sharedPreferences.edit().putString(Constants.SHAREDPREF_DOWNLOAD_TYPE, json).apply()
+        }
+    }
+
+    private fun createChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(Constants.CHANNEL_ID, Constants.CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT)
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.RED
+            notificationChannel.enableVibration(true)
+            notificationChannel.description = Constants.CHANNEL_DESC
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(notificationChannel)
         }
     }
 }
