@@ -15,7 +15,7 @@ import com.udacity.models.DownloadType
 
 fun NotificationManager.sendNotification(applicationContext: Context, downloadType: DownloadType) {
     val downloadDetailsIntent = Intent(applicationContext, DetailActivity::class.java)
-    val downloadDetailsPendingIntent = PendingIntent.getActivity(applicationContext, Constants.NOTIFICATION_DEFAULT_ID, downloadDetailsIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+    val downloadDetailsPendingIntent = PendingIntent.getActivity(applicationContext, Constants.NOTIFICATION_DEFAULT_ID, downloadDetailsIntent, PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
     val downloadImage = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.baseline_cloud_download_24)
     val bigPicStyle = NotificationCompat.BigPictureStyle()
@@ -36,6 +36,8 @@ fun NotificationManager.sendNotification(applicationContext: Context, downloadTy
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
     notify(Constants.NOTIFICATION_DEFAULT_ID, builder.build())
+
+
 
 
 }
