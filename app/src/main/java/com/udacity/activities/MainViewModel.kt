@@ -6,8 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-
-enum class LoadingStatus { LOADING, ERROR, DONE }
+import com.udacity.messaging.Repository
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     class Factory(val app: Application) : ViewModelProvider.Factory {
@@ -19,6 +18,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             throw IllegalArgumentException("Unable to construct viewmodel")
         }
     }
+
+    val isDownloadCompleted: LiveData<Boolean?>
+        get() = Repository.instance().repIsDownloadCompleted
+
     private val _checked = MutableLiveData<Int?>()
     val checked: LiveData<Int?>
         get() = _checked
@@ -26,5 +29,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     init {
         _checked.value = -1
     }
+
+    fun setDownloadIsCompleted(isCompleted: Boolean) {
+        Repository.instance().setDownloadIsCompleted(isCompleted)
+    }
+
+
 }
 

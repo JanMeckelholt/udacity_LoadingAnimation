@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.udacity.Constants
@@ -16,7 +17,6 @@ import com.udacity.databinding.ActivityMainBinding
 import com.udacity.models.DownloadType
 import com.udacity.utils.getUrl
 import timber.log.Timber
-
 
 
 class MainActivity : BaseActivity() {
@@ -49,9 +49,19 @@ class MainActivity : BaseActivity() {
                 download(binding.content.rgDownloadSelection.checkedRadioButtonId)
             }
         }
+
+        viewModel.isDownloadCompleted.observe(this, Observer { isDownloadCompleted ->
+            Timber.w("observing change: - $isDownloadCompleted -")
+            isDownloadCompleted?.let {
+                binding.content.customButton.setDownloadFinished(it)
+                //viewModel.setDownloadIsCompleted(false);
+            }
+        })
+
         createChannel()
 
     }
+
 
     private fun download(selection: Int) {
         Timber.i("downloading $selection -> ${Uri.parse(getUrl(selection))}")

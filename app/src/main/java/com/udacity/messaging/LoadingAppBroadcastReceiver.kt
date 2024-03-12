@@ -8,6 +8,8 @@ import android.content.Context
 import android.content.Context.DOWNLOAD_SERVICE
 import android.content.Intent
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.udacity.Constants
 import com.udacity.models.DownloadType
@@ -17,15 +19,14 @@ import com.udacity.utils.statusToStr
 import timber.log.Timber
 
 
-class LoadingAppBroadcastReceiver() : BroadcastReceiver() {
+class LoadingAppBroadcastReceiver : BroadcastReceiver() {
 
     @SuppressLint("Range")
     override fun onReceive(ctx: Context?, intent: Intent?) {
-        Timber.i("onReceive: $intent (ctx: $ctx)")
 
+        Repository.instance().setDownloadIsCompleted(true)
 
         val id = intent?.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1)
-
         val query = DownloadManager.Query()
         if (id != null) {
             query.setFilterById(id)
@@ -40,7 +41,7 @@ class LoadingAppBroadcastReceiver() : BroadcastReceiver() {
             val notificationManager = ContextCompat.getSystemService(ctx, NotificationManager::class.java) as NotificationManager
             val sharedPreferences = ctx.getSharedPreferences(Constants.PREFS, Context.MODE_PRIVATE)
             val json: String? = sharedPreferences.getString(Constants.SHAREDPREF_DOWNLOAD_TYPE, null)
-            var downloadType : DownloadType
+            var downloadType: DownloadType
             json.let {
                 downloadType = Gson().fromJson(it, DownloadType::class.java)
             }
@@ -70,5 +71,25 @@ class LoadingAppBroadcastReceiver() : BroadcastReceiver() {
 
     private fun handleDownloadComplete() {
         Timber.i("Download complete!")
+    }
+}
+
+
+class Repository private constructor() {
+    private val _repIsDownloadCompleted = MutableLiveData<Boolean?>()
+    val repIsDownloadCompleted: LiveData<Boolean?>
+        get() = _repIsDownloadCompleted
+
+
+    fun setDownloadIsCompleted(isCompleted: Boolean){
+        _repIsDownloadCompleted.value = isCompleted
+    }
+
+
+    companion object {
+        private val INSTANCE = Repository()
+        fun instance(): Repository {
+            return INSTANCE
+        }
     }
 }

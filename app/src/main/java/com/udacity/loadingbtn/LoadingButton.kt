@@ -1,11 +1,11 @@
 package com.udacity.loadingbtn
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
-import android.os.CountDownTimer
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.withStyledAttributes
@@ -35,6 +35,9 @@ class LoadingButton @JvmOverloads constructor(
 
 
     }
+
+    private val vA = ValueAnimator.ofFloat(0f, 100f)
+
     private val paint = Paint().apply {
         // Smooth out edges of what is drawn without affecting shape.
         isAntiAlias = true
@@ -70,8 +73,15 @@ class LoadingButton @JvmOverloads constructor(
         return true
     }
 
-    fun setUrlIsSelected(isSelected : Boolean){
+    fun setUrlIsSelected(isSelected: Boolean) {
         urlIsSelected = isSelected
+    }
+
+    fun setDownloadFinished(isFinished: Boolean) {
+        if (isFinished) {
+            buttonState = ButtonState.Completed
+            invalidate()
+        }
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -87,7 +97,13 @@ class LoadingButton @JvmOverloads constructor(
             }
 
             ButtonState.Completed -> {
-
+                vA.cancel()
+                progress = 1.0f
+                //rectF = RectF(0f, 0f, progress * widthSize, heightSize.toFloat())
+                buttonState = ButtonState.Clicked
+                isClickable = true
+                buttonText = resources.getString(R.string.button_download)
+                invalidate()
             }
         }
         canvas.save()
@@ -106,7 +122,7 @@ class LoadingButton @JvmOverloads constructor(
         val step = 100
 
         for (i in 0..(progress * step).toInt()) {
-            val angle = (Math.PI * i/step) * 2
+            val angle = (Math.PI * i / step) * 2
             val xProgressCircle = (progressRadius * cos(angle)).toFloat()
             val yProgressCircle = (progressRadius * sin(angle)).toFloat()
             drawLine(0f, 0f, xProgressCircle, yProgressCircle, paint)
@@ -140,27 +156,19 @@ class LoadingButton @JvmOverloads constructor(
 
     private fun animateProgressColor() {
         Timber.i("animate loading")
-        val timeToDownload = 3_000L
-        val timer = object : CountDownTimer(timeToDownload, 100) {
-            override fun onTick(millisUntilFinished: Long) {
-                progress = ((timeToDownload - millisUntilFinished).toFloat() / timeToDownload)
-                rectF = RectF(0f, 0f, progress * widthSize, heightSize.toFloat())
-                invalidate()
-            }
 
-            override fun onFinish() {
-                progress = 1.0f
-                rectF = RectF(0f, 0f, progress * widthSize, heightSize.toFloat())
-                buttonState = ButtonState.Clicked
-                isClickable = true
-                buttonText = resources.getString(R.string.button_download)
-                invalidate()
-            }
 
+        vA.duration = 3_000
+        vA.repeatCount = 3
+
+        vA.addUpdateListener { p ->
+            progress = (p.animatedValue as Float) / 100
+            rectF = RectF(0f, 0f, progress * widthSize, heightSize.toFloat())
+            invalidate()
         }
-        timer.start()
+
+        vA.start()
+
     }
-
-
 
 }
