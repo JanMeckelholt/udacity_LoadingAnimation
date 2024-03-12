@@ -65,6 +65,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:backgroundColor="@color/colorPrimary"
+            app:backgroundFilledColor="@color/colorPrimaryDark"
             app:textColor="@color/white"/>
 
 

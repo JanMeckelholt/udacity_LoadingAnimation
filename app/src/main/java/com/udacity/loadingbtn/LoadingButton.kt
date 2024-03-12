@@ -28,6 +28,7 @@ class LoadingButton @JvmOverloads constructor(
     private var progressRadiusPaddingRight = resources.getDimension(R.dimen.paddingRightProgressRadius)
     private var urlIsSelected = false
     private var bgColor = 0
+    private var bgFilledColor = 0
     private var textColor = 0
 
     private var buttonState: ButtonState by Delegates.observable<ButtonState>(ButtonState.Completed) { p, old, new ->
@@ -49,6 +50,7 @@ class LoadingButton @JvmOverloads constructor(
         buttonText = resources.getString(R.string.button_download)
         context.withStyledAttributes(attrs, R.styleable.LoadingButton) {
             bgColor = getColor(R.styleable.LoadingButton_backgroundColor, Color.BLACK)
+            bgFilledColor = getColor(R.styleable.LoadingButton_backgroundFilledColor, Color.BLACK)
             textColor = getColor(R.styleable.LoadingButton_textColor, Color.WHITE)
         }
     }
@@ -114,7 +116,7 @@ class LoadingButton @JvmOverloads constructor(
 
     private fun Canvas.drawFillProgress() {
         save()
-        paint.color = bgColor
+        paint.color = bgFilledColor
         paint.style = Paint.Style.FILL
 
         drawRect(rectF, paint)
